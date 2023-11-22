@@ -8,15 +8,22 @@
     <title>To-to-to-do-list</title>
 </head>
 <body>
-    <h1>ToDoList</h1>
-    <form>
-        <input type="text" placeholder="Введите задачу" class="todo_input" />
-        <button class="todo_button" type="submit">
-            <i class="fas fa-plus-square"></i> Добавить задачу
-        </button>
-    </form>
-    <div class="todo_container">
-        <ul class="todo_list"></ul>
+    <div id="scheduler">
+        <div class="imgbox">
+            <img class="center-fit" src=''>
+        <div>
+            <h1>To-do List</h1>
+            <p><strong>Что нужно сделать?</strong></p>
+            <input type="text" id="input">
+            <button type="submit" id="add">Добавить</button>
+        </div>
+        <div id="list">
+            <h2><strong>Список задач:</strong></h2>
+            <div id="toDo-container">
+                <span id="toDo"></span>
+            </div>   
+            <button disabled type="reset" id="clean">Очистить список</button>
+        </div>
     </div>
     <script src="index.js"></script>
 </body>

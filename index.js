@@ -1,52 +1,53 @@
-// взяла все переменные из DOM
-const todoInput = document.querySelector('.todo_input');
-const todoButton = document.querySelector('.todo_button');
-const todoList = document.querySelector('.todo_list');
-const filterOption = document.querySelector('.filter_todo');
-// так, чтобы работали кнопки
-todoButton.addEventListener("click", addTodo)
-todoList.addEventListener("click", deleteCheck)
-filterOption.addEventListener("click", filterTodo)
-// функции
+const input = document.querySelector('#input');
+const add = document.querySelector('#add');
+const toDo = document.querySelector('#toDo');
+const clean = document.querySelector('#clean');
 
-function addTodo(event) {
-    event.preventDefault();
-    const todoDiv = document.createElement('div');
-    todoDiv.classList.add('todo');
-    const newTodo = document.createElement('li');
-    newTodo.innerText = todoInput.value;
-    newTodo.classList.add('todo_item');
-    todoDiv.appendChild(newTodo);
-    if(todoInput.value === ""){
-        return null
+window.addEventListener('load', () => {
+    if (localStorage.getItem('tasks')) {
+        toDo.innerHTML = localStorage.getItem('tasks');
+        clean.disabled = false;
+    } else {
+        toDo.innerHTML = '<p id="noTask">Создайте новую задачу</p>';
+        clean.disabled = true;
     }
+});
 
-    const completedButton = document.createElement('button');
-    completedButton.innerHTML = '<i class="fas fa-check"></i>';
-    completedButton.classList.add('complete_btn')
-    todoDiv.appendChild(completedButton);
-    const deleteButton = document.createElement('button');
-    deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-    deleteButton.classList.add('delete_btn')
-    todoDiv.appendChild(deleteButton);
-    todoList.appendChild(todoDiv);
-    todoInput.value = ""
-}
+add.addEventListener('click', () => {
+    addTask();
+});
 
-
-function deleteCheck(e) {
-    const item = e.target;
-    if (item.classList[0] === "delete_btn") {
-        const todo = item.parentElement;
-        todo.classList.add("fall")
-        todo.addEventListener('transitionend', function () {
-            todo.remove()
-        })
+input.addEventListener('keydown', (event) => {
+    if (event.keyCode === 13) {
+        addTask();
     }
-    if (item.classList[0] === "complete_btn") {
-        const todo = item.parentElement;
-        todo.classList.toggle("completedItem")
+});
+
+clean.addEventListener('click', () => {
+    toDo.innerHTML = '<p id="noTask">Создайте новую задачу</p>';
+    clean.disabled = true; 
+    localStorage.removeItem('tasks');
+});
+
+toDo.addEventListener('change', () => {
+    updateLocalStorage();
+});
+
+function addTask() {
+        if (input.value !== "") {
+        if (toDo.innerHTML === '<p id="noTask">Создайте новую задачу</p>') {
+            toDo.innerHTML = ""; 
+            clean.disabled = false;
+        }
+    toDo.innerHTML += '<div id="containerTask">' + '<input type="checkbox" id="task">' + input.value + '</div>';
+    input.value = "";
+    updateLocalStorage();
     }
 }
+
+function updateLocalStorage() {
+    localStorage.setItem('tasks', toDo.innerHTML);
+}
+
 
 
